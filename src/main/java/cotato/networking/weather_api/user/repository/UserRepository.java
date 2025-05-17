@@ -1,14 +1,14 @@
-package cotato.networking.weather_api.auth.repository;
+package cotato.networking.weather_api.user.repository;
 
-import cotato.networking.weather_api.user.User;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import cotato.networking.weather_api.user.User;
 
 @Repository
-public interface AuthRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
 	Optional<User> findByLoginId(String loginId);
 

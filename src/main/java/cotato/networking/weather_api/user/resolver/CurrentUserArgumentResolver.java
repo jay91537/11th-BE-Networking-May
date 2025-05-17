@@ -9,7 +9,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import cotato.networking.weather_api.auth.repository.AuthRepository;
+import cotato.networking.weather_api.user.repository.UserRepository;
 import cotato.networking.weather_api.user.User;
 import cotato.networking.weather_api.user.annotation.CurrentUser;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CurrentUserArgumentResolver implements HandlerMethodArgumentResolver {
 
-	private final AuthRepository authRepository;
+	private final UserRepository userRepository;
 
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
@@ -36,6 +36,6 @@ public class CurrentUserArgumentResolver implements HandlerMethodArgumentResolve
 		}
 
 		String loginId = authentication.getName();
-		return authRepository.findByLoginId(loginId).orElse(null);
+		return userRepository.findByLoginId(loginId).orElse(null);
 	}
 }
