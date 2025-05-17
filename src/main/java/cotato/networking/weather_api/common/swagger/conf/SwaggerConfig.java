@@ -24,16 +24,14 @@ public class SwaggerConfig {
 	@Bean
 	public OpenAPI openAPI() {
 
-		SecurityScheme securityScheme = new SecurityScheme()
-			.type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")
-			.in(SecurityScheme.In.HEADER).name("Authorization");
-		SecurityRequirement securityRequirement = new SecurityRequirement().addList("bearerAuth");
+		SecurityScheme cookieScheme = new SecurityScheme()
+			.type(SecurityScheme.Type.APIKEY)
+			.in(SecurityScheme.In.COOKIE).name("JSESSIONID");
 
 		return new OpenAPI()
-			.servers(List.of(new Server().url(swaggerProperties.getUrl()).description("백엔드 서버")))
-			.components(new Components().addSecuritySchemes("bearerAuth", securityScheme))
-			.security(Arrays.asList(securityRequirement))
-			.info(apiInfo());
+			.addSecurityItem(new SecurityRequirement().addList("cookieAuth"))
+			.components(new Components().addSecuritySchemes("cookieAuth", cookieScheme))
+			.info(new Info().title("API Docs").version("v1"));
 	}
 
 	private Info apiInfo() {

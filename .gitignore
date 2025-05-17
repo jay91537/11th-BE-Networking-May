@@ -35,6 +35,8 @@ out/
 
 ### VS Code ###
 .vscode/
+.env
+src/main/resources/application.yml
 
 ### Cursor ###
 .cursorrules
