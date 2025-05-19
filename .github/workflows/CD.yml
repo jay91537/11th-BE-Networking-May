@@ -66,6 +66,9 @@ jobs:
             # 컨테이너 실행 (.env 파일 사용)
             docker run -d --restart unless-stopped \
               --name $APP_NAME \
-              --env-file /home/ec2-user/.env \
               -p 8080:8080 \
+              -e DB_PATH=${{ secrets.DB_PATH }} \
+              -e DB_USERNAME=${{ secrets.DB_USERNAME }} \
+              -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
+              -e SWAGGER_URL=${{ secrets.SWAGGER_URL }} \
               $APP_IMAGE
