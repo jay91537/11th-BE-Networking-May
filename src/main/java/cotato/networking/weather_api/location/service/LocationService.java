@@ -5,6 +5,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import cotato.networking.weather_api.common.error.ErrorCode;
+import cotato.networking.weather_api.common.error.exception.AppException;
 import cotato.networking.weather_api.location.domain.LocationEntity;
 import cotato.networking.weather_api.location.dto.request.LocationRequest;
 import cotato.networking.weather_api.location.dto.response.LocationGetResponse;
@@ -24,6 +26,9 @@ public class LocationService {
 
 	@Transactional
 	public Long addLocation(LocationRequest request, User user) {
+		if (locationRepository.existsByLocationNameAndUserId(request.locationName(), user.getId())) {
+			throw new AppException(ErrorCode.LOCATION_NAME_DUPLICATED_EXCEPTION);
+		}
 		LocationEntity locationEntity = LocationEntity.builder()
 			.locationName(request.locationName())
 			.latitude(request.latitude())

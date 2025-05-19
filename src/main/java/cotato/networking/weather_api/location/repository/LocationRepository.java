@@ -10,4 +10,6 @@ import cotato.networking.weather_api.location.domain.LocationEntity;
 @Repository
 public interface LocationRepository extends JpaRepository<LocationEntity, Long> {
 	Page<LocationEntity> findAllByUserIdOrderByLocationIdDesc(Long userId, Pageable pageable);
+
+	boolean existsByLocationNameAndUserId(String locationName, Long userId);
 }

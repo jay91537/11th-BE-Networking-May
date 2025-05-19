@@ -26,7 +26,9 @@ public enum ErrorCode {
 	WEATHER_API_AUTH_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "W-001", "날씨 API 키 인증 실패"),
 	WEATHER_API_BAD_REQUEST(HttpStatus.BAD_REQUEST, "W-002", "잘못된 날씨 API 요청 파라미터"),
 	WEATHER_API_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "W-003", "날씨 서비스 오류"),
-	;
+
+	// Location API
+	LOCATION_NAME_DUPLICATED_EXCEPTION(HttpStatus.CONFLICT, "L-001", "이미 존재하는 위치 이름입니다.");
 
 	private final HttpStatus status;
 	private final String code;
