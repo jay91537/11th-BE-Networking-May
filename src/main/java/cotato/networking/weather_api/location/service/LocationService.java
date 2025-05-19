@@ -1,10 +1,13 @@
 package cotato.networking.weather_api.location.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cotato.networking.weather_api.location.domain.LocationEntity;
 import cotato.networking.weather_api.location.dto.request.LocationRequest;
+import cotato.networking.weather_api.location.dto.response.LocationGetResponse;
 import cotato.networking.weather_api.location.repository.LocationRepository;
 import cotato.networking.weather_api.user.User;
 import lombok.AccessLevel;
@@ -28,5 +31,10 @@ public class LocationService {
 			.userId(user.getId())
 			.build();
 		return locationRepository.save(locationEntity).getLocationId();
+	}
+
+	public Page<LocationGetResponse> getLocations(User user, Pageable pageable) {
+		return locationRepository.findAllByUserIdOrderByLocationIdDesc(user.getId(), pageable)
+			.map(LocationGetResponse::from);
 	}
 }
