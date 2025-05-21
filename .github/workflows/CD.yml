@@ -71,4 +71,8 @@ jobs:
               -e DB_USERNAME=${{ secrets.DB_USERNAME }} \
               -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
               -e SWAGGER_URL=${{ secrets.SWAGGER_URL }} \
+              -e WEATHER_API_KEY=${{ secrets.WEATHER_API_KEY }} \
+              -e AIRKOREA_SERVICE_KEY=${{ secrets.AIRKOREA_SERVICE_KEY }} \
+              -e DUST_URL=${{ secrets.DUST_URL }} \
+              -e STATION_URL=${{ secrets.STATION_URL }} \
               $APP_IMAGE
