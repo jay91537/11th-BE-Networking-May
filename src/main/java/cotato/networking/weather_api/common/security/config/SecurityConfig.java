@@ -1,11 +1,5 @@
 package cotato.networking.weather_api.common.security.config;
 
-import cotato.networking.weather_api.common.property.property.SwaggerProperties;
-import cotato.networking.weather_api.common.security.CustomUserDetails;
-import cotato.networking.weather_api.common.security.CustomerUserDetailService;
-import lombok.RequiredArgsConstructor;
-
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +10,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
+import cotato.networking.weather_api.common.security.CustomerUserDetailService;
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
@@ -30,7 +27,7 @@ public class SecurityConfig {
 			.csrf(csrf -> csrf.disable())
 			.authorizeHttpRequests(auth -> auth
 				.requestMatchers("/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-				.requestMatchers("/test/**").hasRole("USER")
+				.requestMatchers("/test/**", "/api/weather/**").hasRole("USER")
 				.anyRequest().authenticated()
 			)
 			.formLogin(form -> form.disable())
