@@ -1,13 +1,18 @@
 package cotato.networking.weather_api.common.error.exception.handler;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -61,6 +66,49 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 		log.error("MethodArgumentNotValidException 발생: requestURI={}, error={}", requestURI, ex.getMessage());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+			.body(ErrorResponse.of(ErrorCode.USER_INPUT_EXCEPTION, messages));
+	}
+
+	@Override
+	protected ResponseEntity<Object> handleMissingServletRequestParameter(
+		MissingServletRequestParameterException ex, HttpHeaders headers,
+		HttpStatusCode status, WebRequest request) {
+
+		ServletWebRequest servletWebRequest = (ServletWebRequest)request;
+		HttpServletRequest httpServletRequest = servletWebRequest.getRequest();
+		String requestURI = httpServletRequest.getRequestURI();
+
+		String message = String.format("필수 파라미터 '%s'이(가) 누락되었습니다.", ex.getParameterName());
+		List<String> messages = Collections.singletonList(message);
+
+		log.error("MissingServletRequestParameterException 발생: requestURI={}, error={}", requestURI, ex.getMessage());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+			.body(ErrorResponse.of(ErrorCode.USER_INPUT_EXCEPTION, messages));
+	}
+
+	@Override
+	protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(
+		HttpRequestMethodNotSupportedException ex,
+		HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+
+		ServletWebRequest servletWebRequest = (ServletWebRequest)request;
+		HttpServletRequest httpServletRequest = servletWebRequest.getRequest();
+		String requestURI = httpServletRequest.getRequestURI();
+
+		String supportedMethods = "";
+		if (ex.getSupportedHttpMethods() != null) {
+			supportedMethods = ex.getSupportedHttpMethods().stream()
+				.map(HttpMethod::name)
+				.collect(Collectors.joining(", "));
+		}
+
+		String message = String.format(
+			"요청 메소드 '%s'는 지원되지 않습니다. 지원되는 메소드: %s",
+			ex.getMethod(), supportedMethods);
+		List<String> messages = Collections.singletonList(message);
+
+		log.error("HttpRequestMethodNotSupportedException 발생: requestURI={}, error={}", requestURI, ex.getMessage());
+		return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
 			.body(ErrorResponse.of(ErrorCode.USER_INPUT_EXCEPTION, messages));
 	}
 

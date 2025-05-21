@@ -19,3 +19,18 @@ spring:
 
 swagger:
   url: ${SWAGGER_URL}
+
+# 날씨 API 설정
+weather:
+  api:
+    base-url: https://api.openweathermap.org
+    path: /data/3.0/onecall
+    key: ${WEATHER_API_KEY}
+    connect-timeout: 5000
+    read-timeout: 5000
+    write-timeout: 5000
+
+airkorea:
+  dust-url: ${DUST_URL}
+  station-url: ${STATION_URL}
+  service-key: ${AIRKOREA_SERVICE_KEY}   # 환경변수에서 주입

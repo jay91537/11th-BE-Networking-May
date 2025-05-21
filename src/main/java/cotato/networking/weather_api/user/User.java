@@ -31,5 +31,4 @@ public class User {
 			.password(encoder.encode(request.password()))
 			.build();
 	}
-	
 }
