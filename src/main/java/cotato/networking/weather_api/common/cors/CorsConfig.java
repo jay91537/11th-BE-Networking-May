@@ -10,12 +10,14 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class CorsConfig {
 
 	private static final String FRONT_LOCALHOST_URL = "http://localhost:5173";
+	private static final String SERVER_LOCALHOST_URL = "http://localhost:8080";
 
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowCredentials(true);
 		config.addAllowedOriginPattern(FRONT_LOCALHOST_URL);
+		config.addAllowedOriginPattern(SERVER_LOCALHOST_URL);
 		config.addAllowedHeader("*");
 		config.addAllowedMethod("*");
 
