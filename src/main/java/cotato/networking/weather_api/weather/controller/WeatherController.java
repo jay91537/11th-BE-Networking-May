@@ -14,7 +14,6 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import reactor.core.publisher.Mono;
 
 @Validated
 @RestController
@@ -25,10 +24,9 @@ public class WeatherController {
 	private final WeatherService weatherService;
 
 	@GetMapping
-	public Mono<ResponseEntity<ApiResponse<WeatherResponse>>> getWeather(
+	public ResponseEntity<ApiResponse<WeatherResponse>> getWeather(
 		@RequestParam(required = true) @Min(value = -90, message = "위도는 -90도 이상이어야 합니다") @Max(value = 90, message = "위도는 90도 이하여야 합니다") final double lat,
 		@RequestParam(required = true) @Min(value = -180, message = "경도는 -180도 이상이어야 합니다") @Max(value = 180, message = "경도는 180도 이하여야 합니다") final double lon) {
-		return weatherService.getWeatherData(lat, lon)
-			.map(data -> ResponseEntity.ok(ApiResponse.ok(data)));
+		return ResponseEntity.ok(ApiResponse.ok(weatherService.getWeatherData(lat, lon)));
 	}
 }

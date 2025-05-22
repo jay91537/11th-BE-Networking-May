@@ -15,7 +15,6 @@ import cotato.networking.weather_api.weather.mapper.WeatherMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import reactor.core.publisher.Mono;
 
 @Slf4j
 @Service
@@ -28,7 +27,7 @@ public class WeatherServiceImpl implements WeatherService {
 	private final WeatherMapper weatherMapper;
 
 	@Override
-	public Mono<WeatherResponse> getWeatherData(final double lat, final double lon) {
+	public WeatherResponse getWeatherData(final double lat, final double lon) {
 		return weatherWebClient.get()
 			.uri(uriBuilder -> uriBuilder
 				.path(weatherApiProperties.getPath())
@@ -50,6 +49,6 @@ public class WeatherServiceImpl implements WeatherService {
 				} else {
 					return new AppException(ErrorCode.WEATHER_API_SERVER_ERROR);
 				}
-			});
+			}).block();
 	}
 }
