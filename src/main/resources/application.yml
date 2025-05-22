@@ -23,8 +23,8 @@ server:
       cookie:
         name: JSESSIONID
         http-only: true
-        secure: false  # 개발환경에서는 false
-        same-site: lax
+        secure: true
+        same-site: None
         max-age: 1800  # 30분
         
 swagger:
