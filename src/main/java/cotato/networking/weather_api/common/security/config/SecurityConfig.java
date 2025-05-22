@@ -30,7 +30,7 @@ public class SecurityConfig {
 			.csrf(csrf -> csrf.disable())
 			.authorizeHttpRequests(auth -> auth
 				.requestMatchers("/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-				.requestMatchers("/test/**", "/api/weather/**").hasRole("USER")
+				.requestMatchers("/test/**", "/api/weather/**", "/api/dust/**", "/api/locations/**").hasRole("USER")
 				.anyRequest().authenticated()
 			)
 			.formLogin(form -> form.disable())
