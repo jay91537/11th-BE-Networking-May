@@ -18,6 +18,8 @@ import cotato.networking.weather_api.weather.dto.response.WeatherResponse.Weathe
 @Component
 public class WeatherMapper {
 
+	private static final ZoneId SEOUL_ZONE = ZoneId.of("Asia/Seoul");
+
 	public WeatherResponse mapToWeatherResponse(final OpenWeatherResponse openWeatherResponse) {
 		return WeatherResponse.builder()
 			.current(mapCurrent(openWeatherResponse.getCurrent()))
@@ -86,7 +88,7 @@ public class WeatherMapper {
 	private LocalDateTime convertToLocalDateTime(final long timestamp) {
 		return LocalDateTime.ofInstant(
 			Instant.ofEpochSecond(timestamp),
-			ZoneId.systemDefault());
+			SEOUL_ZONE);
 	}
 
 	private String getWindDirection(final int degrees) {
